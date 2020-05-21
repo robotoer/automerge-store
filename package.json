@@ -1,0 +1,26 @@
+{
+  "name": "automerge-store",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Robert Chu <allegrormc@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "automerge": "^0.14.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-jwt": "^5.3.3",
+    "express-jwt-authz": "^2.3.1",
+    "jwks-rsa": "^1.8.0",
+    "lru-cache": "^5.1.1",
+    "tsoa": "^3.0.8"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.0",
+    "@types/express": "^4.17.6",
+    "@types/express-jwt": "0.0.42",
+    "@types/lru-cache": "^5.1.0",
+    "@types/node": "^14.0.4",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.3"
+  }
+}
