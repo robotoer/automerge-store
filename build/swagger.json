@@ -1,0 +1,462 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"RequestType": {
+				"anyOf": [
+					{
+						"type": "string",
+						"enum": [
+							"change"
+						],
+						"nullable": false
+					},
+					{
+						"type": "string",
+						"enum": [
+							"redo"
+						],
+						"nullable": false
+					},
+					{
+						"type": "string",
+						"enum": [
+							"undo"
+						],
+						"nullable": false
+					}
+				]
+			},
+			"Clock": {
+				"properties": {},
+				"type": "object",
+				"additionalProperties": {
+					"type": "number",
+					"format": "double"
+				}
+			},
+			"OpAction": {
+				"anyOf": [
+					{
+						"type": "string",
+						"enum": [
+							"ins"
+						],
+						"nullable": false
+					},
+					{
+						"type": "string",
+						"enum": [
+							"del"
+						],
+						"nullable": false
+					},
+					{
+						"type": "string",
+						"enum": [
+							"inc"
+						],
+						"nullable": false
+					},
+					{
+						"type": "string",
+						"enum": [
+							"link"
+						],
+						"nullable": false
+					},
+					{
+						"type": "string",
+						"enum": [
+							"set"
+						],
+						"nullable": false
+					},
+					{
+						"type": "string",
+						"enum": [
+							"makeText"
+						],
+						"nullable": false
+					},
+					{
+						"type": "string",
+						"enum": [
+							"makeTable"
+						],
+						"nullable": false
+					},
+					{
+						"type": "string",
+						"enum": [
+							"makeList"
+						],
+						"nullable": false
+					},
+					{
+						"type": "string",
+						"enum": [
+							"makeMap"
+						],
+						"nullable": false
+					}
+				]
+			},
+			"UUID": {
+				"type": "string"
+			},
+			"DataType": {
+				"anyOf": [
+					{
+						"type": "string",
+						"enum": [
+							"counter"
+						],
+						"nullable": false
+					},
+					{
+						"type": "string",
+						"enum": [
+							"timestamp"
+						],
+						"nullable": false
+					}
+				]
+			},
+			"Op": {
+				"properties": {
+					"action": {
+						"$ref": "#/components/schemas/OpAction"
+					},
+					"obj": {
+						"$ref": "#/components/schemas/UUID"
+					},
+					"key": {
+						"type": "string"
+					},
+					"value": {
+						"additionalProperties": true
+					},
+					"datatype": {
+						"$ref": "#/components/schemas/DataType"
+					},
+					"elem": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"action",
+					"obj"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DiffAction": {
+				"anyOf": [
+					{
+						"type": "string",
+						"enum": [
+							"create"
+						],
+						"nullable": false
+					},
+					{
+						"type": "string",
+						"enum": [
+							"insert"
+						],
+						"nullable": false
+					},
+					{
+						"type": "string",
+						"enum": [
+							"set"
+						],
+						"nullable": false
+					},
+					{
+						"type": "string",
+						"enum": [
+							"remove"
+						],
+						"nullable": false
+					}
+				]
+			},
+			"CollectionType": {
+				"anyOf": [
+					{
+						"type": "string",
+						"enum": [
+							"list"
+						],
+						"nullable": false
+					},
+					{
+						"type": "string",
+						"enum": [
+							"map"
+						],
+						"nullable": false
+					},
+					{
+						"type": "string",
+						"enum": [
+							"table"
+						],
+						"nullable": false
+					},
+					{
+						"type": "string",
+						"enum": [
+							"text"
+						],
+						"nullable": false
+					}
+				]
+			},
+			"Conflict": {
+				"properties": {
+					"actor": {
+						"type": "string"
+					},
+					"value": {
+						"additionalProperties": true
+					},
+					"link": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"actor",
+					"value"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Diff": {
+				"properties": {
+					"action": {
+						"$ref": "#/components/schemas/DiffAction"
+					},
+					"type": {
+						"$ref": "#/components/schemas/CollectionType"
+					},
+					"obj": {
+						"$ref": "#/components/schemas/UUID"
+					},
+					"path": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"key": {
+						"type": "string"
+					},
+					"index": {
+						"type": "number",
+						"format": "double"
+					},
+					"value": {
+						"additionalProperties": true
+					},
+					"elemId": {
+						"type": "string"
+					},
+					"conflicts": {
+						"items": {
+							"$ref": "#/components/schemas/Conflict"
+						},
+						"type": "array"
+					},
+					"datatype": {
+						"$ref": "#/components/schemas/DataType"
+					},
+					"link": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"action",
+					"type",
+					"obj"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Change": {
+				"properties": {
+					"message": {
+						"type": "string"
+					},
+					"requestType": {
+						"$ref": "#/components/schemas/RequestType"
+					},
+					"actor": {
+						"type": "string"
+					},
+					"seq": {
+						"type": "number",
+						"format": "double"
+					},
+					"deps": {
+						"$ref": "#/components/schemas/Clock"
+					},
+					"ops": {
+						"items": {
+							"$ref": "#/components/schemas/Op"
+						},
+						"type": "array"
+					},
+					"diffs": {
+						"items": {
+							"$ref": "#/components/schemas/Diff"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"actor",
+					"seq",
+					"deps",
+					"ops"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Update": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"action": {
+						"additionalProperties": true
+					},
+					"change": {
+						"$ref": "#/components/schemas/Change"
+					},
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"action",
+					"change",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "automerge-store",
+		"version": "1.0.0",
+		"license": {
+			"name": "MIT"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/docSet/{docSet}/doc/{id}": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"additionalProperties": true,
+									"nullable": true
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "docSet",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/docSet/{docSet}/doc/{id}/update": {
+			"post": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"additionalProperties": true,
+									"nullable": true
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "docSet",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/Update"
+								},
+								"type": "array"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}

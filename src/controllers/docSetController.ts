@@ -6,12 +6,14 @@ import {
   Post,
   Route,
 } from "tsoa";
-import { FileBackend } from "src/backend/backend-file";
-import { Update } from "src/models/update";
-import { Backend } from "src/backend/backend";
+
+// Must be a relative-path import for tsoa.
+import { FileBackend } from "../backend/backend-file";
+import { Backend } from "../backend/backend";
+import { Update } from "../models/update";
 
 @Route("docSet")
-export class DocSetController<T = any> extends Controller {
+export class DocSetController extends Controller {
   constructor(
     private _backend: Backend = new FileBackend()
   ) {
@@ -19,7 +21,7 @@ export class DocSetController<T = any> extends Controller {
   }
 
   @Get("{docSet}/doc/{id}")
-  public get<D extends T = T>(
+  public get(
     @Path() docSet: string,
     @Path() id: string
   ): any | null {
@@ -29,7 +31,7 @@ export class DocSetController<T = any> extends Controller {
   }
 
   @Post("{docSet}/doc/{id}/update")
-  public update<D extends T = T>(
+  public update(
     @Path() docSet: string,
     @Path() id: string,
     @Body() updates: Update[]
